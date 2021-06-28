@@ -30,6 +30,8 @@
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "@babel/preset-typescript": "^7.13.0",
     "@types/jquery": "^3.5.5",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
@@ -72,6 +74,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "chalk": "^4.1.0",
     "framingo": "git+https://github.com/fryanshenatwork/framingo.git#1.0.0",

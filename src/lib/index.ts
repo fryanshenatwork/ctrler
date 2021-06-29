@@ -144,16 +144,20 @@ const ctrler = {
             }
           })
           .catch((ers: any) => {
+            console.log(opt.dataHandler.error)
+
             if (
               opt.dataHandler
               && opt.dataHandler.error
               && _this.utils.isFunction(opt.dataHandler.error)
             ) {
-              reject({
+              const errorObj = {
                 descript: foundController.descript,
                 error: result.error.get(ers.message),
                 originError: ers
-              })
+              }
+              opt.dataHandler.error(errorObj)
+              reject(errorObj)
             } else {
               reject({
                 descript: foundController.descript,

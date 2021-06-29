@@ -9,8 +9,18 @@
 <body>
   <h1>SANDBOX</h1>
   <main>
+    <style>
+      button{
+        padding: .3em .5em;
+        margin-right: .5em;
+        cursor: pointer;
+      }
+    </style>
     <article>
-      Please open dev tool to operating.
+      Please open dev tool to operating. <br>
+      <hr>
+      <button onclick="window.testGood()">Test GOOD Controller</button>
+      <button onclick="window.testBad()">Test BAD Controller</button>
     </article>
   </main>
   <script>
@@ -29,6 +39,13 @@
             } else {
               throw new Error('Response Error') // Response Error
             }
+          },
+          error: function (ers) {
+            console.log(ers);
+            alert(
+              'Controller descript: ' + ers.descript +
+              '\n Error message: ' + ers.error.descript['en']
+            )
           }
         }
       })
@@ -61,8 +78,16 @@
             url: '9eac8fc4-456b-4d0e-b745-d1ea884ade0e'
           }
         })
+        .add({
+          name: 'test.bad',
+          descript: 'Test Bad API',
+          action: {
+            method: 'get',
+            url: '9eac8fc4-456b-4d0e-b745-d1ea884ade0e3'
+          }
+        })
 
-      window.a = function () {
+      window.testGood = function () {
         return sampleController.controller.use('test.good')
           .then((res) => {
             console.log('finally', res)
@@ -70,7 +95,16 @@
           .catch(ers => {
             console.error('finally ers', ers)
           })
+        }
 
+      window.testBad = function () {
+        return sampleController.controller.use('test.bad')
+          .then((res) => {
+            console.log('finally', res)
+          })
+          .catch(ers => {
+            console.error('finally ers', ers)
+          })
         }
       window.sampleController = sampleController
     }

@@ -1,11 +1,5 @@
 import axios from 'axios'
 
-// declare global {
-//   interface Window { // eslint-disable-line
-//     ctrler: any
-//   }
-// }
-
 interface AxiosCreateOptInterface {
   baseURL: string,
   timeout?: number,

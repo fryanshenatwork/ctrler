@@ -1,7 +1,7 @@
 import ctrler from '/@/lib'
 
 if (process.env.NODE_ENV === 'development') {
-  window.ctrler = ctrler
+  window.myPlugin = ctrler
 }
 
 export default ctrler

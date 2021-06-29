@@ -16,7 +16,6 @@ const _path = {
 }
 
 const baseWebpackConfig = function (process) {
-  templates = require('./templates')(_path, process)
   return {
     context: _path.main,
     entry: {
@@ -98,7 +97,7 @@ const baseWebpackConfig = function (process) {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       })
-    ].concat(templates),
+    ],
     output: {
       path: _path.dist,
       filename: require('../package.json').name + '.js',

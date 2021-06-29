@@ -1,5 +1,5 @@
 {
-  "name": "plugin.name",
+  "name": "ctrler",
   "version": "0.0.0",
   "description": "webpack developer tools",
   "main": "main.js",
@@ -16,9 +16,16 @@
     "version:pre": "npm version prerelease --preid alpha --no-git-tag-version;git st; npm run gitTag",
     "pack": "tar -zcvf ./dist/cloudPlatform_v$npm_package_version.tar.gz -C dist/ ."
   },
+  "files": [
+    "src",
+    "dist/*.js",
+    "dist/*.map",
+    "types/*.d.ts"
+  ],
   "keywords": [
     "npm",
-    "webpack"
+    "webpack",
+    "ctrler"
   ],
   "author": "FR",
   "license": "ISC",

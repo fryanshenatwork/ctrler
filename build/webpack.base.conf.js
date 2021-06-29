@@ -94,6 +94,9 @@ const baseWebpackConfig = function (process) {
       // }),
       new webpack.EnvironmentPlugin({
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      }),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       })
     ].concat(templates),
     output: {
@@ -104,7 +107,13 @@ const baseWebpackConfig = function (process) {
       //   : _path.buildAssets + 'bundle.js',
       publicPath: process.env.NODE_ENV === 'production'
       ? './'
-      : '/'
+      : '/',
+      globalObject: 'this',
+      chunkLoadingGlobal: require('../package.json').name,
+      library: require('../package.json').name,
+      libraryTarget: 'umd',
+      libraryExport: 'default',
+      auxiliaryComment: 'Test Comment'
     },
     devtool: 'inline-source-map',
     resolve: {

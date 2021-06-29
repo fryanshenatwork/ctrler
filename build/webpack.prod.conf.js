@@ -52,9 +52,9 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
     maxAssetSize: 512000
   },
   plugins: [
-    new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: '*'
-    }),
+    // new CleanWebpackPlugin({
+    //   cleanOnceBeforeBuildPatterns: '*'
+    // }),
     // new CopyWebpackPlugin({
     //   patterns: [
     //     { from: `${_path.src}/public`, to: `public` }

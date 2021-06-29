@@ -4,4 +4,4 @@ pipelines:
   default:
     - step:
         script:
-          - git push --mirror git@github.com:fryanshenatwork/webpackme.git
+          - git push --mirror git@github.com:fryanshenatwork/ctrler.git

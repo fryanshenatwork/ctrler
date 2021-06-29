@@ -12,7 +12,7 @@ module.exports = function (_path, process) {
     }
   ]
 
-  const templatesPath = _path.src + '/templates/'
+  const templatesPath = _path.main + '/sandbox/'
   const searchRecursive = function (dir, pattern) {
     var results = []
     fs.readdirSync(dir).forEach(function (dirInner) {

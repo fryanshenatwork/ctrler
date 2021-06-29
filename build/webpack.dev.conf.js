@@ -10,6 +10,7 @@ const baseWebpackConfig = baseConfig.baseWebpackConfig(process)
 const _path = baseConfig._path
 const ip = require('ip').address()
 
+const templates = require('./templates')(_path, process)
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
   devServer: {
@@ -30,7 +31,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     before (app, server) {
       chokidar.watch([
-        _path.src + '/templates/**/*.html'
+        _path.main + '/sandbox/**/*.html'
       ]).on('all', function () {
         server.sockWrite(server.sockets, 'content-changed')
       })
@@ -44,7 +45,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new webpack.HotModuleReplacementPlugin()
     // new webpack.NamedModulesPlugin()
-  ],
+  ].concat(templates),
   watch: true
 })
 

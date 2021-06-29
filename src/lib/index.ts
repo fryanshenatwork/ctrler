@@ -1,13 +1,7 @@
-import * as $ from 'jquery'
-
-// eslint-disable-next-line
-console.log('WebpackMe is working')
-
-const updatePreferColorSchema = function (event: { submitter: string }) : boolean {
-  const button = $(event.submitter)
-  const selectedVal:string = button.val() + ''
-
-  $('body').attr('data-prefers-color', selectedVal)
-  return true
+interface optInterface {
+  msg?: string
 }
-window.updatePreferColorSchema = updatePreferColorSchema
+
+export default (opt : optInterface = {}) : void => {
+  console.log(`It's work ${opt.msg ? opt.msg : ''}`)
+}

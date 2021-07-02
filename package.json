@@ -8,12 +8,12 @@
     "build": "node ./build/webpack.prod.conf.js",
     "dev": "node ./build/webpack.dev.conf.js",
     "lint": "node ./build/webpack.lint.conf.js",
-    "gitTag": "git add . ; git commit -m \"$npm_package_name-v$npm_package_version\"; git tag $npm_package_name-v$npm_package_version",
-    "version:update": "npm version prerelease --preid alpha;git st; npm run gitTag",
-    "version:patch": "npm version patch --no-git-tag-version;git st; npm run gitTag",
-    "version:minor": "npm version minor --no-git-tag-version;git st; npm run gitTag",
-    "version:major": "npm version major --no-git-tag-version;git st; npm run gitTag",
-    "version:pre": "npm version prerelease --preid alpha --no-git-tag-version;git st; npm run gitTag",
+    "gitTag": "git add package.* dist/ types/ -f ; git commit -m \"$npm_package_name-v$npm_package_version\"; git tag $npm_package_name-v$npm_package_version",
+    "version:update": "npm version prerelease --no-git-tag-version --preid alpha; npm run gitTag",
+    "version:patch": "npm version patch --no-git-tag-version; npm run gitTag",
+    "version:minor": "npm version minor --no-git-tag-version; npm run gitTag",
+    "version:major": "npm version major --no-git-tag-version; npm run gitTag",
+    "version:pre": "npm version prerelease --preid alpha --no-git-tag-version; npm run gitTag",
     "pack": "tar -zcvf ./dist/cloudPlatform_v$npm_package_version.tar.gz -C dist/ ."
   },
   "files": [

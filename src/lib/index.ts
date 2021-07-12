@@ -126,12 +126,10 @@ const ctrler : ctrlerInterface = {
       if (typeof (caOpt.action) === 'object') {
         action = (otherProps = {}) => {
           const merge = { ...{}, ...caOpt.action, ...otherProps }
-          axiosInstance(merge)
+          return axiosInstance(merge)
         }
       } else {
-        action = (others = {}) => {
-          caOpt.action(axiosInstance, others)
-        }
+        action = (others = {}) => caOpt.action(axiosInstance, others)
       }
       controllers[caOpt.name] = {
         action,

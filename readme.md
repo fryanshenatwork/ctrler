@@ -139,9 +139,17 @@ Remove controller
 
 #### use
 The only way to call controller you added
-- `params` (required) [String] - Name of the controller you added
+- `params1` (required) [String] - Name of the controller you added
+- `params2` [object] - others params send to axios
     ```javascript
-    sampleController.controller.use('server.testing')
+    sampleController.controller.use(
+        'server.testing',
+        {
+            params: {test: 'hello'},
+            data: {},
+            header: {}
+        }
+    )
     	.then((res) => {
     		console.log('Response Data', res)
     	})

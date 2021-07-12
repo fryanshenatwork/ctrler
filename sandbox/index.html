@@ -74,7 +74,7 @@
           name: 'test.good',
           descript: 'Test Good API',
           action: {
-            method: 'get',
+            method: 'post',
             url: '9eac8fc4-456b-4d0e-b745-d1ea884ade0e'
           }
         })
@@ -88,7 +88,13 @@
         })
 
       window.testGood = function () {
-        return sampleController.controller.use('test.good')
+        return sampleController.controller.use(
+          'test.good',
+          {
+            params: { hello: 'hi' },
+            data: {123: 456}
+          }
+        )
           .then((res) => {
             console.log('finally', res)
           })

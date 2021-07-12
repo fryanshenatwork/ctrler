@@ -6,9 +6,15 @@ interface AxiosCreateOptInterface {
   headers?: {}
 }
 
+interface actionOtherProps {
+  params?: any,
+  data?: any,
+  header?: any
+}
+
 interface ctrlerResultControlleraddInterface {
   name: string,
-  action: any,
+  action: (axiosInstance : any, useProps?: actionOtherProps) => {} | { method: string, url: string },
   descript?: {}
 }
 
@@ -17,14 +23,16 @@ interface ctrlerErrorInterface {
   descript: string | {[key: string]: any}
 }
 
+interface ctrlerControllerInterface {
+  use: (name: string, otherProps: actionOtherProps) => Promise<any>,
+  add: (opt: ctrlerResultControlleraddInterface) => ctrlerControllerInterface,
+  remove: (name: string) => any
+  list: Array<string>,
+  axios: any
+}
+
 interface ctrlerResultInterface {
-  controller: {
-    use: (name: string) => void,
-    add: (opt: ctrlerResultControlleraddInterface) => any,
-    remove: (name: string) => any
-    list: Array<string>,
-    axios: any
-  },
+  controller: ctrlerControllerInterface,
   error: {
     add: (opt: ctrlerErrorInterface) => void,
     remove: (name: string) => void,
@@ -103,8 +111,9 @@ const ctrler : ctrlerInterface = {
 
     const axiosInstance = axios.create(opt.axiosInstance)
 
-    const controllerAdd = function (caOpt: ctrlerResultControlleraddInterface) {
-      let action
+    const controllerAdd
+    : (caOpt: ctrlerResultControlleraddInterface) => ctrlerControllerInterface = function (caOpt: ctrlerResultControlleraddInterface) {
+      let action : (otherProps : actionOtherProps) => any = () => {}
       if (controllers[caOpt.name] !== undefined) {
         throw new Error(`Controller name "${caOpt.name}" already taken`)
       }
@@ -115,9 +124,14 @@ const ctrler : ctrlerInterface = {
         throw new Error(`The function "add" second arg need to be function`)
       }
       if (typeof (caOpt.action) === 'object') {
-        action = () => axiosInstance(caOpt.action)
+        action = (otherProps = {}) => {
+          const merge = { ...{}, ...caOpt.action, ...otherProps }
+          axiosInstance(merge)
+        }
       } else {
-        action = () => caOpt.action(axiosInstance)
+        action = (others = {}) => {
+          caOpt.action(axiosInstance, others)
+        }
       }
       controllers[caOpt.name] = {
         action,
@@ -125,7 +139,9 @@ const ctrler : ctrlerInterface = {
       }
       return result.controller
     }
-    const controllerRemove = function (name: string) {
+
+    const controllerRemove
+    : (name: string) => ctrlerControllerInterface = function (name) {
       const found = result.controller.list.find((e) => `${e}` === name)
       if (!found) {
         throw new Error(`Controller name "${name} was not assign to the controller`)
@@ -133,7 +149,9 @@ const ctrler : ctrlerInterface = {
       delete controllers[name]
       return result.controller
     }
-    const controllerUse = function (name : string) {
+
+    const controllerUse
+    : (name: string, otherProps: actionOtherProps) => Promise<any> = function (name = '', otherProps = {}) {
       const found = result.controller.list.find((e) => `${e}` === name)
       if (!found) {
         throw new Error(`Controller name "${name} was not assign to the controller`)
@@ -141,7 +159,7 @@ const ctrler : ctrlerInterface = {
       const foundController = controllers[name]
 
       return new Promise((resolve, reject) => {
-        foundController.action()
+        foundController.action(otherProps)
           .then((res: any) => {
             if (
               opt.dataHandler
@@ -154,8 +172,6 @@ const ctrler : ctrlerInterface = {
             }
           })
           .catch((ers: any) => {
-            console.log(opt.dataHandler.error)
-
             if (
               opt.dataHandler
               && opt.dataHandler.error

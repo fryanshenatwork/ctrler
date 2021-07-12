@@ -34,14 +34,24 @@ interface ctrlerResultInterface {
   }
 }
 
-const ctrler = {
-  create (opt : {
-    axiosInstance: AxiosCreateOptInterface,
-    dataHandler?: {
-      success: (res: {}) => {},
-      error: (ers: {}) => {},
-    }
-  }) {
+interface ctrlerCreateProps {
+  axiosInstance: AxiosCreateOptInterface,
+  dataHandler?: {
+    success: (res: {}) => {},
+    error: (ers: {}) => {},
+  }
+}
+
+interface ctrlerInterface {
+  create: (opt: ctrlerCreateProps) => ctrlerResultInterface,
+  utils: {
+      isFunction: (fn : any) => boolean,
+      isObject: (fn: any) => boolean
+  }
+}
+
+const ctrler : ctrlerInterface = {
+  create (opt : ctrlerCreateProps) {
     const _this = this
     const controllers : {[key: string]: any} = {}
     const findError = function (code: string | Array<string>) {

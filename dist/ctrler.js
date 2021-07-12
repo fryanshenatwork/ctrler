@@ -1890,7 +1890,7 @@ const ctrler = {
         };
         const axiosInstance = axios_default().create(opt.axiosInstance);
         const controllerAdd = function (caOpt) {
-            let action;
+            let action = () => { };
             if (controllers[caOpt.name] !== undefined) {
                 throw new Error(`Controller name "${caOpt.name}" already taken`);
             }
@@ -1899,10 +1899,15 @@ const ctrler = {
                 throw new Error(`The function "add" second arg need to be function`);
             }
             if (typeof (caOpt.action) === 'object') {
-                action = () => axiosInstance(caOpt.action);
+                action = (otherProps = {}) => {
+                    const merge = Object.assign(Object.assign({}, caOpt.action), otherProps);
+                    axiosInstance(merge);
+                };
             }
             else {
-                action = () => caOpt.action(axiosInstance);
+                action = (others = {}) => {
+                    caOpt.action(axiosInstance, others);
+                };
             }
             controllers[caOpt.name] = {
                 action,
@@ -1918,14 +1923,14 @@ const ctrler = {
             delete controllers[name];
             return result.controller;
         };
-        const controllerUse = function (name) {
+        const controllerUse = function (name = '', otherProps = {}) {
             const found = result.controller.list.find((e) => `${e}` === name);
             if (!found) {
                 throw new Error(`Controller name "${name} was not assign to the controller`);
             }
             const foundController = controllers[name];
             return new Promise((resolve, reject) => {
-                foundController.action()
+                foundController.action(otherProps)
                     .then((res) => {
                     if (opt.dataHandler
                         && opt.dataHandler.success
@@ -1937,7 +1942,6 @@ const ctrler = {
                     }
                 })
                     .catch((ers) => {
-                    console.log(opt.dataHandler.error);
                     if (opt.dataHandler
                         && opt.dataHandler.error
                         && _this.utils.isFunction(opt.dataHandler.error)) {

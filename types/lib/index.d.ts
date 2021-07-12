@@ -3,9 +3,17 @@ interface AxiosCreateOptInterface {
     timeout?: number;
     headers?: {};
 }
+interface actionOtherProps {
+    params?: any;
+    data?: any;
+    header?: any;
+}
 interface ctrlerResultControlleraddInterface {
     name: string;
-    action: any;
+    action: (axiosInstance: any, useProps?: actionOtherProps) => {} | {
+        method: string;
+        url: string;
+    };
     descript?: {};
 }
 interface ctrlerErrorInterface {
@@ -14,14 +22,15 @@ interface ctrlerErrorInterface {
         [key: string]: any;
     };
 }
+interface ctrlerControllerInterface {
+    use: (name: string, otherProps: actionOtherProps) => Promise<any>;
+    add: (opt: ctrlerResultControlleraddInterface) => ctrlerControllerInterface;
+    remove: (name: string) => any;
+    list: Array<string>;
+    axios: any;
+}
 interface ctrlerResultInterface {
-    controller: {
-        use: (name: string) => void;
-        add: (opt: ctrlerResultControlleraddInterface) => any;
-        remove: (name: string) => any;
-        list: Array<string>;
-        axios: any;
-    };
+    controller: ctrlerControllerInterface;
     error: {
         add: (opt: ctrlerErrorInterface) => void;
         remove: (name: string) => void;
@@ -30,18 +39,20 @@ interface ctrlerResultInterface {
         list: ctrlerErrorInterface[];
     };
 }
-declare const ctrler: {
-    create(opt: {
-        axiosInstance: AxiosCreateOptInterface;
-        dataHandler?: {
-            success: (res: {}) => {};
-            error: (ers: {}) => {};
-        };
-    }): ctrlerResultInterface;
+interface ctrlerCreateProps {
+    axiosInstance: AxiosCreateOptInterface;
+    dataHandler?: {
+        success: (res: {}) => {};
+        error: (ers: {}) => {};
+    };
+}
+interface ctrlerInterface {
+    create: (opt: ctrlerCreateProps) => ctrlerResultInterface;
     utils: {
         isFunction: (fn: any) => boolean;
         isObject: (fn: any) => boolean;
     };
-};
+}
+declare const ctrler: ctrlerInterface;
 export default ctrler;
 //# sourceMappingURL=index.d.ts.map
